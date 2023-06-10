@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "YourProject", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "作业", Version = "v1" });
 
 });
 builder.Services.AddDbContext<AppDbContext>(p => p.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerConnect"]));
@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "YourProject v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "作业 v1");
     });
 
 }

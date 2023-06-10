@@ -50,7 +50,7 @@ namespace ShopWebApi.Controllers
         }
 
         // PUT: api/User/id
-        //添加一个用户
+        //修改一个用户
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, User user)
         {
