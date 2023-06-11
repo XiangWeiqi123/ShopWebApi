@@ -16,7 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "20计科 林琳 202011101", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "02计科 林琳 202011101", Version = "v1" });
     c.IncludeXmlComments("bin\\Debug\\ShopWebApi.xml");
 });
 
