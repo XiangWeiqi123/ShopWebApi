@@ -39,7 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseKnife4UI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        c.RoutePrefix = "IGeekFan";
+        c.RoutePrefix = "";
     });
 
 }
