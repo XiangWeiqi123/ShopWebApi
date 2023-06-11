@@ -16,6 +16,10 @@ namespace ShopWebApi.Controllers
         }
 
         // GET: api/Orders
+        /// <summary>
+        /// 拿订单
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
@@ -23,6 +27,11 @@ namespace ShopWebApi.Controllers
         }
 
         // GET: api/Orders/5
+        /// <summary>
+        /// 通过id查找订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
@@ -37,6 +46,12 @@ namespace ShopWebApi.Controllers
         }
 
         // PUT: api/Orders/5
+        /// <summary>
+        /// 更新订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOrder(int id, Order order)
         {
@@ -67,6 +82,11 @@ namespace ShopWebApi.Controllers
         }
 
         // POST: api/Orders
+        /// <summary>
+        /// 添加一个订单
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
@@ -78,6 +98,11 @@ namespace ShopWebApi.Controllers
         }
 
         // DELETE: api/Orders/5
+        /// <summary>
+        /// 删除订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Order>> DeleteOrder(int id)
         {
