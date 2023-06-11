@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments("bin\\Debug\\ShopWebApi.xml");
 });
 
-builder.Services.AddDbContext<AppDbContext>(p => p.UseSqlServer(builder.Configuration["ConnectionStrings:SqlServerConnect"]));
+builder.Services.AddDbContext<AppDbContext>(p => p.UseSqlServer( AddGoodThing.DecryptPassword(builder.Configuration["ConnectionStrings:SqlServerConnect"])));
 
 
 var app = builder.Build();
