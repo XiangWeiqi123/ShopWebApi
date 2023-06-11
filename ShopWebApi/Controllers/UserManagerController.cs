@@ -33,8 +33,19 @@ namespace ShopWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Regist([FromBody] UserManager userManager)
         {
+            if(_context.UserManagers.Where(p=>p.UserName== userManager.UserName).Any()) {
+            return BadRequest("用户已存在");
+            
+            
+            
+            }
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+                return BadRequest(errors);
+            }
             _context.Entry(userManager).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-           
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -55,7 +66,8 @@ namespace ShopWebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserManager userManager)
         {
-          var entity = await _context.UserManagers.Where(p=>p.UserName==userManager.UserName&&p.PassWd==userManager.PassWd).FirstOrDefaultAsync();
+            var entity = await _context.UserManagers.Where(p => p.UserName == userManager.UserName && p.PassWd == userManager.PassWd).FirstOrDefaultAsync();
+           
             if (entity == null)
             {
                 return BadRequest();

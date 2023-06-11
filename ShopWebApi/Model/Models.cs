@@ -7,7 +7,7 @@ namespace ShopWebApi.Model
         public int UserID { get; set; }
 
         [Required(ErrorMessage = "用户名不能为空")]
-        [StringLength(100, ErrorMessage = "用户名过长")]
+        [StringLength(10, ErrorMessage = "用户名过长")]
         public string UserName { get; set; }
 
         [Required]
@@ -58,8 +58,11 @@ namespace ShopWebApi.Model
     public class UserManager
     {
         [Required]
+        [StringLength(16, ErrorMessage = "用户名过长")]
         public string UserName { get;set; }
         [Required]
+        [StringLength(20, ErrorMessage = "密码过长")]
+        [RegularExpression(@"^(?=.*[a-zA-Z])(?=.*\d).*$", ErrorMessage = "密码必须包含英文和数字字符")]
         public string PassWd { get; set; }
 
     }
