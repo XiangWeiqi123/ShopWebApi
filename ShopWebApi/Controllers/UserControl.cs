@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopWebApi.Model;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ShopWebApi.Controllers
 {
@@ -23,7 +24,6 @@ namespace ShopWebApi.Controllers
         }
 
         // GET: api/User
-        //拿到所有的用户
         /// <summary>
         /// 拿到所有用户
         /// </summary>
@@ -31,7 +31,7 @@ namespace ShopWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserList()
         {
-            return Ok(await _context.Users.ToListAsync());
+            return Ok(await _context.Users.Where(p => !p.IsDeleted).ToListAsync());
         }
 
         // GET: api/User/id
@@ -39,7 +39,7 @@ namespace ShopWebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> FindUserById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.Where(u => !u.IsDeleted && u.UserID == id).Include(u=>u.Orders).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -49,17 +49,41 @@ namespace ShopWebApi.Controllers
             return Ok(user);
         }
 
+        [HttpGet("FindUserWhthOrders")]
+        public async Task<IActionResult> FindUserWithOrders(int id)
+        {
+           var userEntity = await _context.Users.Where(p => p.UserID == id).FirstOrDefaultAsync();
+            if (userEntity == null || userEntity.IsDeleted)
+            {
+                return BadRequest();
+            }
+            return Ok(userEntity);
+        }
+
         // PUT: api/User/id
         //修改一个用户
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, User user)
         {
+
             if (id != user.UserID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            var userChanging = await _context.Users.FirstOrDefaultAsync(p => p.UserID == id);
+
+            if (userChanging == null || userChanging.IsDeleted)
+            {
+                return BadRequest();
+            }
+
+            userChanging.UserName = user.UserName;
+            userChanging.Email = user.Email;
+            userChanging.PhoneNumber = user.PhoneNumber;
+
+
+            _context.Entry(userChanging).State = EntityState.Modified;
 
             try
             {
@@ -82,28 +106,38 @@ namespace ShopWebApi.Controllers
         // POST: api/User
         //添加一个用户
         [HttpPost]
-        public async Task<ActionResult<User>> AddUser([FromBody]User user)
+        public async Task<ActionResult<User>> AddUser(User user)
         {
+            //模型校验，确保输入的用户实体是合法的
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                return BadRequest(errors);
+            }
+            if (_context.Users.Any(p => p.PhoneNumber == user.PhoneNumber))
+            {
+                return NoContent();
+            }
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.UserID }, user);
+            return Ok(user);
         }
 
         // DELETE: api/User/id
+        //通过用户id删除用户
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var user = await _context.Users.SingleOrDefaultAsync(p => p.UserID == id);
+            if (user != null)
             {
-                return NotFound();
+                user.IsDeleted = true;  // I assume you want to set it to true for deletion
+                await _context.SaveChangesAsync();
+                return NoContent();
             }
 
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return BadRequest();
         }
 
     }

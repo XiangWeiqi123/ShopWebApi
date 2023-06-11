@@ -1,11 +1,24 @@
-﻿namespace ShopWebApi.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ShopWebApi.Model
 {
     public class User
     {
         public int UserID { get; set; }
+
+        [Required(ErrorMessage ="用户名不能为空")]
+        [StringLength(100,ErrorMessage ="用户名过长")]
         public string UserName { get; set; }
+
+        [Required]
+        [EmailAddress(ErrorMessage ="请输入有效的邮件地址")]
         public string Email { get; set; }
+        [Required]
+        [Phone]
         public string PhoneNumber { get; set; }
+
+        public bool IsDeleted { get; set; } // 软删除
+
 
         public List<Order> Orders { get; set; }
     }

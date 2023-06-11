@@ -3,7 +3,7 @@ using ShopWebApi.Model;
 
 namespace ShopWebApi
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<User> Users { get; set; }
@@ -27,9 +27,13 @@ namespace ShopWebApi
                 .HasOne(od => od.Product)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(od => od.ProductID);
+
+           modelBuilder.Entity<User>()
+                .Property(u => u.IsDeleted)
+                .HasDefaultValue(false);
         }
 
     }
 
-    
+
 }
