@@ -15,7 +15,6 @@ namespace ShopWebApi.Controllers
 
         //从ioc容器中拿到DbContext对象
         /// <summary>
-        /// jjj
         /// </summary>
         /// <param name="context"></param>
         public UserController(AppDbContext context)
@@ -35,11 +34,15 @@ namespace ShopWebApi.Controllers
         }
 
         // GET: api/User/id
-        //通过id查找用户
+        /// <summary>
+        /// 通过id查找用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> FindUserById(int id)
         {
-            var user = await _context.Users.Where(u => !u.IsDeleted && u.UserID == id).Include(u=>u.Orders).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => !u.IsDeleted && u.UserID == id).Include(u => u.Orders).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -48,11 +51,15 @@ namespace ShopWebApi.Controllers
 
             return Ok(user);
         }
-
+        /// <summary>
+        /// 把用户连着订单(订单里面包含订单详情)查出来
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("FindUserWhthOrders")]
         public async Task<IActionResult> FindUserWithOrders(int id)
         {
-           var userEntity = await _context.Users.Where(p => p.UserID == id).FirstOrDefaultAsync();
+            var userEntity = await _context.Users.Where(p => p.UserID == id).Include(p=>p.Orders).ThenInclude(p=>p.OrderDetails).FirstOrDefaultAsync();
             if (userEntity == null || userEntity.IsDeleted)
             {
                 return BadRequest();
@@ -61,7 +68,12 @@ namespace ShopWebApi.Controllers
         }
 
         // PUT: api/User/id
-        //修改一个用户
+        /// <summary>
+        /// 修改用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, User user)
         {
@@ -104,7 +116,11 @@ namespace ShopWebApi.Controllers
             return NoContent();
         }
         // POST: api/User
-        //添加一个用户
+        /// <summary>
+        /// 添加用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<User>> AddUser(User user)
         {
@@ -125,7 +141,11 @@ namespace ShopWebApi.Controllers
         }
 
         // DELETE: api/User/id
-        //通过用户id删除用户
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
