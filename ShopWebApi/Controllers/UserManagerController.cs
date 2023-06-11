@@ -55,7 +55,7 @@ namespace ShopWebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserManager userManager)
         {
-          var entity = await _context.UserManagers.Where(p=>p.UserName==userManager.UserName).FirstOrDefaultAsync();
+          var entity = await _context.UserManagers.Where(p=>p.UserName==userManager.UserName&&p.PassWd==userManager.PassWd).FirstOrDefaultAsync();
             if (entity == null)
             {
                 return BadRequest();
