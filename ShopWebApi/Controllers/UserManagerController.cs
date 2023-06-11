@@ -33,11 +33,9 @@ namespace ShopWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Regist([FromBody] UserManager userManager)
         {
-            if(_context.UserManagers.Where(p=>p.UserName== userManager.UserName).Any()) {
-            return BadRequest("用户已存在");
-            
-            
-            
+            if (_context.UserManagers.Where(p => p.UserName == userManager.UserName).Any())
+            {
+                return BadRequest("用户已存在");
             }
             if (!ModelState.IsValid)
             {
@@ -67,7 +65,7 @@ namespace ShopWebApi.Controllers
         public async Task<IActionResult> Login([FromBody] UserManager userManager)
         {
             var entity = await _context.UserManagers.Where(p => p.UserName == userManager.UserName && p.PassWd == userManager.PassWd).FirstOrDefaultAsync();
-           
+
             if (entity == null)
             {
                 return BadRequest();
