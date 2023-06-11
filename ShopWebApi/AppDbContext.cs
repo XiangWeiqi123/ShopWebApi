@@ -10,6 +10,7 @@ namespace ShopWebApi
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<UserManager> UserManagers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +32,9 @@ namespace ShopWebApi
            modelBuilder.Entity<User>()
                 .Property(u => u.IsDeleted)
                 .HasDefaultValue(false);
+
+            modelBuilder.Entity<UserManager>()
+                .HasKey(p => p.UserName);
         }
 
     }

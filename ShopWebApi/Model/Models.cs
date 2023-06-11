@@ -6,12 +6,12 @@ namespace ShopWebApi.Model
     {
         public int UserID { get; set; }
 
-        [Required(ErrorMessage ="用户名不能为空")]
-        [StringLength(100,ErrorMessage ="用户名过长")]
+        [Required(ErrorMessage = "用户名不能为空")]
+        [StringLength(100, ErrorMessage = "用户名过长")]
         public string UserName { get; set; }
 
         [Required]
-        [EmailAddress(ErrorMessage ="请输入有效的邮件地址")]
+        [EmailAddress(ErrorMessage = "请输入有效的邮件地址")]
         public string Email { get; set; }
         [Required]
         [Phone]
@@ -55,6 +55,15 @@ namespace ShopWebApi.Model
         public int OrderID { get; set; }
         public Order Order { get; set; }
     }
+    public class UserManager
+    {
+        [Required]
+        public string UserName { get;set; }
+        [Required]
+        public string PassWd { get; set; }
+
+    }
+
 
 
 
