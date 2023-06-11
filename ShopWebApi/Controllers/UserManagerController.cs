@@ -44,7 +44,7 @@ namespace ShopWebApi.Controllers
 
                 throw;
             }
-            return Ok();
+            return Ok(userManager);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace ShopWebApi.Controllers
             {
                 return BadRequest();
             }
-            return Ok(entity);
+            return Ok();
         }
     }
 }
